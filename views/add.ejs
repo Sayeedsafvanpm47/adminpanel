@@ -1,0 +1,19 @@
+<%- include('head') -%>
+<div>
+    <% if (messages.error) { %>
+        <p class="error-message text-danger">
+          <%= messages.error %>
+        </p>
+      <% } %>
+  </div>
+    <h1>Add User</h1>
+    <form method="post" action="/admin/added">
+        <label for="name">Name:</label>
+        <input type="text" name="email">
+        <br>
+        <label for="email">Email:</label>
+        <input type="text" name="password" >
+        <br>
+        <button type="submit">Add User</button>
+    </form>
+    <%- include('foot') -%>

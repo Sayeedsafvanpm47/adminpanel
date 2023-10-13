@@ -1,0 +1,47 @@
+<%- include('head') -%>
+
+    <h1>User Data</h1>
+    <a href="/admin/add">Add User</a>
+     <div class="form-group">
+        <form action="/admin/search" method="post">
+            <div class="input-group rounded" style="width: 30%;">
+                <input name="searchTerm" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon"  />
+                <span class="input-group-text border-0" id="search-addon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+              </div>
+        </form>
+     </div>
+
+   
+      
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            
+            <th scope="col">Email</th>
+            <th scope="col">Password</th>
+            <th scope="col">Edit User</th>
+            <th scope="col">Delete User</th>
+          </tr>
+        </thead>
+        <tbody>
+            <% user.forEach(function(item) { %>
+                <tr>
+                    <td><%= item.email %></td>
+                    <td><%= item.password %></td>
+                    <td>
+                        <a href="/admin/edit/<%= item._id %>">Edit</a>
+                    </td>
+                    <td>
+                        <a href="/admin/delete/<%= item._id %>">Delete</a>
+                    </td>
+                    
+                </tr>
+                <% }); %>
+      
+        </tbody>
+      </table>
+      <%- include('foot') -%>
+
+

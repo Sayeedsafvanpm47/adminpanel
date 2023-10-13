@@ -1,0 +1,61 @@
+
+<%- include('head') -%>
+<h1 class="text-center text-primary display-4">Register your account</h1>
+
+
+  
+
+
+<div class="registration-form">
+          <form method="post" action="/signup">
+         
+              <div class="form-icon">
+                  <span><i class="icon icon-user"></i></span>
+              </div>
+             
+              <div class="form-group">
+                    <input type="text" class="form-control item" id="fname" name="first-name" placeholder="First name">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control item" id="lname" name="last-name" placeholder="Second name">
+                </div>
+              <div class="form-group position-relative">
+                  <input type="text" class="form-control item" id="email" name="email" placeholder="Username or email">
+                  <span class="form-group text-center px-2" style="position:absolute; top: 20%; right: 0; padding-bottom: 20px;" >
+                    <% if (messages.error) { %>
+                        <p class="error-message text-danger">
+                          <%= messages.error %>
+                        </p>
+                      <% } %>
+                    </span>
+                </input>
+              </div>
+              <div class="form-group">
+                    <div class="form-group">
+                              <input type="text" class="form-control item" id="phone-number" placeholder="Phone Number">
+                          </div>
+                  <input type="password" class="form-control item" id="password" name="password" placeholder="Password">
+                 
+          </div>
+              
+            
+              <div class="form-group">
+                    <input type="submit" class="btn btn-block create-account" value="Signup">
+              
+              </div>
+              <a href="/" class="link-info" style="text-decoration: none;">Already have an account? Click here to Login</a>
+          </form>
+          <div class="social-media">
+              <h5>Sign up with social media</h5>
+              <div class="social-icons">
+                  <a href="#"><i class="icon-social-facebook" title="Facebook"></i></a>
+                  <a href="#"><i class="icon-social-google" title="Google"></i></a>
+                  <a href="#"><i class="icon-social-twitter" title="Twitter"></i></a>
+              </div>
+          </div>
+      </div>
+      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+      <script src="assets/js/script.js"></script>
+
+<%- include('foot') -%>
