@@ -1,19 +1,20 @@
 <%- include('head') -%>
 <body style="background-image: url('/public/adduser.avif'); background-size: fill; background-position: center; background-repeat: no-repeat; background-color: inherit;">
   <h1 class="text-center display-4" style="font-weight: bold; color: rgb(214, 104, 8); font-family: Georgia, 'Times New Roman', Times, serif;">Add User</h1>
-  <div>
-    <% if (messages.error) { %>
-        <p class="error-message text-danger">
-          <%= messages.error %>
-        </p>
-      <% } %>
-  </div>
+
 
   <div class="container registration-form" style="width: 40%;">
     <div class="form-group">
      
       <form method="post" action="/admin/added" style="background-color: rgba(2, 110, 40, 0.372); border-radius: 30px; box-shadow: 5px 5px 10px #888888;">
-          <div class="form-group">
+        <div class="text-center" style="background-color: rgba(245, 245, 245, 0.518);">
+          <% if (messages.error) { %>
+              <p class="error-message text-danger" style="font-size: 20px; font-weight: bold;">
+                <%= messages.error %>
+              </p>
+            <% } %>
+        </div> 
+        <div class="form-group">
               <input type="text" class="form-control item" id="fname" name="firstname" placeholder="First name">
           </div>
           <div class="form-group">

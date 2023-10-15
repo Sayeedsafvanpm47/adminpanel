@@ -2,7 +2,7 @@
 <%- include('head') -%>
 <body style="background-image: url('/public/userlog.png'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: inherit;">
 
-<h1 class="text-center display-4" style="font-weight: bold; color: rgb(138, 138, 77); font-family: Georgia, 'Times New Roman', Times, serif;">Save Your Chords!</h1>
+<h1 class="text-center display-4" style="font-weight: bold; color: rgb(138, 138, 77); font-family: Georgia, 'Times New Roman', Times, serif;"> <span style="color: red;"><u>G#major</u> </span> - Save Your Chords!</h1>
 
 
 
@@ -20,15 +20,15 @@
               </div>
             
             
-              <div class="form-group text-center">
+              <div class="form-group text-center" style="background-color: rgba(245, 245, 245, 0.518);">
                 <% if (messages.success) { %>
-                    <p class="success-message text-success">
+                    <p class="error-message text-success" style="font-size: 20px; font-weight: bold;">
                       <%= messages.success %>
                     </p>
                   <% } %>
                   
                   <% if (messages.error) { %>
-                    <p class="error-message text-danger">
+                    <p class="error-message text-danger" style="font-size: 20px; font-weight: bold;">
                       <%= messages.error %>
                     </p>
                   <% } %>
