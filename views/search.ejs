@@ -1,28 +1,36 @@
 
 
 <%- include('head') -%>
+<body style="background-image: url('/public/search.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat; background-color: inherit;">
+<div class="d-flex justify-content-between">
+          <h1 class="header-view">Search Results</h1>
 
-<h1>Search Results</h1>
-
+<a href="/admin/view"><button class="btn btn-danger m-2">Go Back</button></a>
+</div>
 <div class="table-responsive">
 
 <% if (searchres != '') { %>
  
-<table class="table table-striped">
+<table class="table">
 
           <thead>
-                    <tr>
+                    <tr class="transparent-hd">
                               <th scope="col">Email</th>
-                              <th scope="col">Password</th>
+                              <th scope="col">Firstname</th>
+                              <th scope="col">Lastname</th>
+                              <th scope="col">Phone number</th>
+                              
 
                     </tr>
           </thead>
 
           <tbody>
           <% searchres.forEach(element => {  %>
-                    <tr>
+                    <tr class="transparent-row-2"  style="color: rgb(130, 110, 218); font-weight: 800;">
                     <td><%= element.email %></td>
-                    <td><%= element.password %></td>
+                    <td><%= element.firstname %></td>
+                    <td><%= element.lastname %></td>
+                    <td><%= element.phonenumber %></td>
           </tr>
                     <% }) %>
           </tbody>

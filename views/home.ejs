@@ -1,8 +1,26 @@
 
 <%- include('head') -%>
+<body style="background-image: url('/public/save.jpg'); background-size: cover;  background-repeat:repeat; background-color: inherit;">
+          <div class="text-center d-flex position-relative">
+                    <h1 class="display-1" style="font-weight: bold; color: rgba(194, 96, 5, 0.518);">Save Your <span class="homespan">Chords!</span></h1>
+                    <button class="btn position-absolute" style="right: 0; margin-top: 2%; background-color: rgba(197, 4, 4, 0.537); margin-right: 1%;"><a class="text-white" style="text-decoration: none;" href="/logout">Logout</a></button>
+          </div>
+          
+<h1  class="admintxt"  style="font-weight: bold; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Welcome <span class="homespan"><%= username ? username : ''  %></span> </h1>
+<form action="/posted" method="post">
+<div class="text-center">
+          <p style="font-size: 40px; font-weight: 600; color: rgba(8, 103, 71, 0.731);"><u>Insert your Chords here</u></p>
+          <textarea class="txtarea" name="txt" id="txtarea" cols="60" rows="20"></textarea>
+</div>
+<div class="text-center" style="padding-bottom: 30px; padding-top: 10px;">
+<input type="submit" class="btn" style="background-color: rgba(197, 4, 4, 0.537); color: white; width: 120px;" value="Save Chords">
 
-<h1>Welcome <%= username ? username : ''  %></h1>
-<button class="btn btn-danger"><a class="text-white" style="text-decoration: none;" href="/logout">Click here to Logout</a></button>
+</div>
 
+</form>
+<div class="text-center">
+          <button class="btn" style="background-color: rgba(197, 4, 4, 0.537); margin-bottom: 10px; margin-top: -20px;  width: 120px;"><a class="text-white" style="text-decoration: none;" href="/posts">View Chords</a></button>
+
+</div>
 
 <%- include('foot') -%>

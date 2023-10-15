@@ -10,10 +10,25 @@ const userSchema = new mongoose.Schema({
           password:{type :String,
           required : true
           },
+          firstname:{type :String,
+                
+                    },
+                   lastname:{type :String,
+                            
+                              },
+                              phonenumber:{type :String,
+                                     
+                                        },
           isadmin:{
                     type:Number,
                     default:0
-          }
+          },
+          posts: [
+            {
+              id: String,
+                content: String
+            }
+        ]
 })
 
 

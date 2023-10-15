@@ -1,17 +1,21 @@
 
 <%- include('head') -%>
-<div class="container-fluid d-flex justify-content-between pt-2">
-<h1 class="text-center">Welcome Admin </h1>
+<body style="background-image: url('/public/admin.jpg'); background-size: cover; background-repeat: no-repeat;">
 
-<button class="btn btn-danger"><a class="text-white" style="text-decoration: none;" href="/admin/logout">Click here to Logout</a></button></div>
 
-<div class="container-fluid d-flex-justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Dashboard</h1>
+<div class="container-fluid d-flex justify-content-between pt-2" style="text-align: center;" >
+<h1 class="text-center display-1" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-weight: 900;">Welcome <span class="text-danger">Admin </span></h1>
+<div style="padding-top: 20px;">
+<button class="btn btn-danger" style="height: 40px; width: 200px;"><a class="text-white" style="text-decoration: none;" href="/admin/logout">Click here to Logout</a></button></div>
+</div>
+<div class="container-fluid d-flex-justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="max-width: none;">
+          <h1 class="h3 hstyle" style="font-weight: 600; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Click below to manage users!</h1>
           <div class="btn-toolbar mb-2 mb-md 0">
                     <div class="btn-group me-2">
-                              <a href="/admin/view" class="btn btn-sm btn-outline-secondary">View Users</a>
+                              <a href="/admin/view" style="width: 130px;" class="btn btn-sm btn-info">View Users</a>
                     </div>
           </div>
 </div>
+
 
 <%- include('foot') -%>

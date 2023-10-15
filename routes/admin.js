@@ -6,6 +6,7 @@ const flash = require('express-flash')
 const {checkSchema,validationResult} = require('express-validator')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const sessionmiddleware = require('../session')
 
 
 
@@ -17,21 +18,10 @@ router.use(function (req, res, next) {
     next();
 });
 
-router.use(
-    session({
-        secret: "thisismysecrctekey",
-        saveUninitialized: false,
-        resave: false,
-    })
-);
 
-router.use(flash())
+router.use(sessionmiddleware)
 
-router.use(express.urlencoded({ extended: true }));
-router.use(express.static(__dirname + '/assets/'));
-
-// Check if the user is logged in
-function checkLogIn(req, res, next) {
+function checkIn(req, res, next) {
     if (req.session.isIn) {
        
         next(); 
@@ -40,6 +30,15 @@ function checkLogIn(req, res, next) {
         res.redirect('/admin//');
     }
 }
+
+
+router.use(flash())
+
+router.use(express.urlencoded({ extended: true }));
+router.use(express.static(__dirname + '/assets/'));
+
+// Check if the user is logged in
+
 
 
 router.get('/', (req, res) => {
@@ -53,45 +52,103 @@ router.get('/', (req, res) => {
     }
 });
 
-router.get('/adminhome', checkLogIn, (req, res) => {
+
+
+router.post('/adlogin',async (req,res)=>{
+
+
+  try {
+
+    const { email, password } = req.body;
+    let admin = false; 
+
+    if (email.length < 1) {
+      req.flash('error', 'Email required');
+      return res.redirect('/admin/');
+    } else if (password.length < 1) {
+      req.flash('error', 'Password required');
+      return res.redirect('/admin/');
+    }
+
+    const user = await model.findOne({ email: req.body.email });
+    if (!user) {
+      // Handle the case where the user is not found
+      req.flash('error', 'User not found');
+      res.redirect('/admin//');
+      return; // Return early to exit the function
+    }
+  
+    if (user.isadmin == 1) {
+      admin = true;
+    } else {
+      req.flash('error', 'Not an admin');
+      res.redirect('/admin//');
+      return; // Return early to exit the function
+    }
+  
+    const isMatch = await bcrypt.compare(req.body.password, user.password);
+    if (isMatch && admin) {
+      req.session.isIn = true;
+      res.redirect('/admin/adminhome');
      
-    res.render('./adminhome');
+    } else {
+      console.log("Failed");
+      req.flash('error', 'Invalid login credentials');
+      res.redirect('/admin//');
+    }
+  } catch (error) {
+    req.flash('error', 'Invalid input');
+    res.redirect('/admin//');
+  }
+               
+                
+          
+
+})
+
+
+
+router.get('/adminhome', checkIn,async (req, res) => {
+   if(req.session.isIn){
+    res.render('./adminhome')
+   }
 });
 
 
 // db operations
 
 
-function checkIn(req, res, next) {
-    if (req.session.isIn) {
-       
-        next(); 
-      
-    } else {
-        res.redirect('/admin/adminhome');
-    }
-}
 
 
 
-router.get('/view', checkIn,async (req, res) => {
+
+router.get('/view',async (req, res) => {
+  
     try {
-       
+        if(req.session.isIn){
         const user = await model.find({});
         res.render('view', { user: user });
         }
+        else{
+            res.redirect('/admin/adminhome');
+        }
+    }
    catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 });
 
-router.get('/edit/:id',checkIn,async (req, res) => {
+router.get('/edit/:id',async (req, res) => {
     const userId = req.params.id;
 
     try {
+        if(req.session.isIn){
         const user = await model.findById(userId);
         res.render('edit', { user: user });
+        }else{
+            res.redirect('/admin/adminhome');
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -104,7 +161,7 @@ router.get('/edit/:id',checkIn,async (req, res) => {
 
 const registrationSchema = {
     email: {
-      normalizeEmail: true,
+      
       custom: {
           options: value => {
               return model.find({
@@ -120,34 +177,41 @@ const registrationSchema = {
   }
 
 
-router.post('/update/:id', checkIn, async (req, res) => {
+router.post('/update/:id', async (req, res) => {
     const userId = req.params.id;
-    const email = req.body.email;
-    const password = req.body.password;
+    const {email,firstname,lastname,phonenumber,password} = req.body
     
     try {
+        if(req.session.isIn){
         if (!email || !password) {
-            // If either email or password is empty, show an error message and redirect back to the edit page.
+           
             req.flash('error', 'Email and password cannot be empty');
             return res.redirect(`/admin/edit/${userId}`);
         }
-
-        const updatedUser = await model.findByIdAndUpdate(userId, { email, password });
+        var hash = await bcrypt.hash(password,saltRounds) 
+        const updatedUser = await model.findByIdAndUpdate(userId, { email, password : hash,firstname,lastname,phonenumber });
         res.redirect('/admin/view');
+    }else{
+        res.redirect('/admin/adminhome');
+    }
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+        req.flash('error','some problem occured while creating')
+       res.redirect(`/admin/edit/${userId}`)
     }
 });
 
 
 // add user
-router.get('/add',checkIn, async (req, res) => {
+router.get('/add', async (req, res) => {
   
 
-
+if(req.session.isIn){
     
         res.render('add');
+}else{
+    res.redirect('/admin/adminhome');
+
+}
     
 });
 router.get('/error',(req,res)=>{
@@ -155,28 +219,40 @@ router.get('/error',(req,res)=>{
    
 })
 
-router.post('/added', checkSchema(registrationSchema),checkIn, async (req, res) => {
+router.post('/added', checkSchema(registrationSchema),  async (req, res) => {
     try {
+        if(req.session.isIn){
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-          req.flash('error','email exists')
-         return res.redirect('/admin/add')
-      }
-    
-
-
-        if (!req.body.email) {
-            req.flash('error', 'Email cannot be empty');
+            req.flash('error', 'Email already exists');
             return res.redirect('/admin/add');
         }
 
-        if (!req.body.password) {
-            req.flash('error', 'Password cannot be empty');
+        const {email,firstname,lastname,phonenumber,password} = req.body
+
+        if (!email || !password) {
+            req.flash('error', 'Email and password cannot be empty');
             return res.redirect('/admin/add');
         }
-        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-        const user = await model.create({ email: req.body.email, password: hashedPassword });
-        res.redirect('/admin/view');
+
+        // Hash the password
+        var hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        // Create the user with the hashed password
+        const user = await model.insertMany([{ email: email, password: hashedPassword,firstname,lastname,phonenumber }]);
+
+        // Check if user is created
+        if (user) {
+            res.redirect('/admin/view');
+        } else {
+            req.flash('error', 'User creation failed');
+            res.redirect('/admin/add');
+        }
+    }
+    else
+    {
+        res.redirect('/admin/adminhome');
+    }
     } catch (error) {
         console.error(error);
         req.flash('error', 'An error occurred while creating the user');
@@ -187,58 +263,30 @@ router.post('/added', checkSchema(registrationSchema),checkIn, async (req, res) 
 
 
 
+
 router.get('/delete/:id', async (req, res) => {
     const userId = req.params.id;
 
     try {
+        if(req.session.isIn){
         const user = await model.findByIdAndDelete(userId);
         res.redirect('/admin/view');
+        }else{
+            res.redirect('/admin/adminhome');
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 });
 
+// search
 
-
-
-
-router.get('/logout', (req, res) => {
-    req.session.isIn = false;
-    req.session.destroy();
-    res.redirect('/admin//');
-});
-
-router.post('/adlogin',async (req,res)=>{
-
-
-      
-                    // check if the user exists 
-                    const user = await model.findOne({ email: req.body.email }); 
-                    if(user.isadmin==1){
-                    if (user.password == req.body.password) { 
-
-                     req.session.isIn = true;
-                    res.redirect('/admin/adminhome')
-                      console.log("success")
-                    
-                      } else { 
-                              console.log("failed")
-                      
-                        res.redirect('/admin//')
-                      } 
-                    }else{
-                              res.redirect('/admin//')
-                    }
-                    
-              
-   
-   })
-
-   router.get('/search', checkIn, async (req, res) => {
+router.get('/search',  async (req, res) => {
     const searchTerm = req.query.searchTerm;
 
     try {
+        if(req.session.isIn){
         if (searchTerm) {
            
             const searchFiltered = searchTerm.replace(/[^a-zA-Z0-9]/g, "");
@@ -251,21 +299,44 @@ router.post('/adlogin',async (req,res)=>{
            
             res.render('./search');
         }
+    }else
+    {
+        res.redirect('/admin/adminhome');
+    }
     } catch (error) {
         console.log(error);
     }
 });
 
 
-router.post('/search', checkIn, (req, res) => {
-   
+router.post('/search',  (req, res) => {
+   if(req.session.isIn){
     const searchTerm = req.body.searchTerm;
 
     // Redirect to  search route with the search term as a query parameter
     res.redirect('/admin/search?searchTerm=' + searchTerm);
+   }
+   else
+   {
+    res.redirect('/admin/adminhome');
+   }
 });
 
 
+
+
+
+
+
+
+
+
+   
+   router.get('/logout', (req, res) => {
+    req.session.isIn = false;
+    req.session.destroy();
+    res.redirect('/admin//');
+});
 
 
 

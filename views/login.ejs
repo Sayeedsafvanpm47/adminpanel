@@ -1,32 +1,25 @@
 
 <%- include('head') -%>
+<body style="background-image: url('/public/userlog.png'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: inherit;">
 
-<h1 class="text-center text-primary display-4">Login</h1>
+<h1 class="text-center display-4" style="font-weight: bold; color: rgb(138, 138, 77); font-family: Georgia, 'Times New Roman', Times, serif;">Save Your Chords!</h1>
 
 
-<!-- <form method="post" action="/login">
-  <p>
-    <label for="username">Username:</label>
-    <input type="text" name="email" id="email">
-  </p>
-  <p>
-    <label for="password">Password:</label>
-    <input type="text" name="password" id="password">
-  </p>
-  <p>
-    
-  </p>
-  <a href="/signup">create account</a>
-</form> -->
 
 
 
 
 <div class="registration-form">
-          <form method="post" action="/login">
+          <form method="post" action="/login" style="background-color: rgba(10, 145, 30, 0.372); border-top-left-radius: 30px; border-top-right-radius: 30px; box-shadow: 5px 5px 10px #888888;" >
               <div class="form-icon">
                   <span><i class="icon icon-user"></i></span>
+                 
               </div>
+              <div class="text-center">
+                <p style="font-size: 30px; color: whitesmoke; font-weight: 800; margin-top: -40px;">Login Here</p>
+              </div>
+            
+            
               <div class="form-group text-center">
                 <% if (messages.success) { %>
                     <p class="success-message text-success">
@@ -52,10 +45,10 @@
                     <input type="submit" class="btn btn-block create-account" value="Login">
               
               </div>
-              <a href="/signup" class="link-info" style="text-decoration: none;">Haven't signed up yet? Click here to register</a>
+              <a href="/signup" class="link-info text-white" style="text-decoration: none;">Haven't signed up yet? Click here to register</a>
           </form>
-          <div class="social-media">
-              <h5>Sign up with social media</h5>
+          <div class="social-media" style="background-color: rgba(10, 145, 30, 0.372); border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; border: none; box-shadow: 5px 5px 10px #888888;">
+              <h5 style="color: rgb(246, 246, 246);">Sign up with social media</h5>
               <div class="social-icons">
                   <a href="#"><i class="icon-social-facebook" title="Facebook"></i></a>
                   <a href="#"><i class="icon-social-google" title="Google"></i></a>

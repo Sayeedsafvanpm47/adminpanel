@@ -1,40 +1,58 @@
 <%- include('head') -%>
+<body style="background-image: url('/public/admin2.jpg'); background-size: cover; background-repeat: no-repeat; ">
+<div class="d-flex justify-content-between" style="height: 50px;">
+    <h1 class="header-view">User Data</h1>
+    <div class="d-flex justify-content-evenly">
+    <a href="/admin/add"><button class="btn btn-warning m-2">Add User <i class="fa-solid fa-plus"></i></button></a>
+    <a href="/admin/adminhome"><button class="btn btn-danger m-2">Go Back</button></a>
+  </div>
+  </div> 
+   
 
-    <h1>User Data</h1>
-    <a href="/admin/add">Add User</a>
-     <div class="form-group">
-        <form action="/admin/search" method="post">
-            <div class="input-group rounded" style="width: 30%;">
-                <input name="searchTerm" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon"  />
-                <span class="input-group-text border-0" id="search-addon">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-              </div>
-        </form>
-     </div>
+     <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <form action="/admin/search" method="post">
+            <div class="input-group mb-3">
+              <input name="searchTerm" type="search" class="form-control" style="border-top-left-radius: 20px; border-bottom-left-radius: 20px;" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+              <button class="btn btn-info rounded-pill" style="border-top-right-radius: 20px; border-bottom-right-radius: 20px;" type="submit" name="searchTerm">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
 
    
       
       <table class="table">
-        <thead class="thead-light">
-          <tr>
+        <thead>
+          <tr class="transparent-hd">
             
             <th scope="col">Email</th>
-            <th scope="col">Password</th>
+            <th scope="col">Firstname</th>
+            <th scope="col">Lastname</th>
+            <th scope="col">Phone Number</th>
             <th scope="col">Edit User</th>
             <th scope="col">Delete User</th>
           </tr>
         </thead>
         <tbody>
             <% user.forEach(function(item) { %>
-                <tr>
+                <tr class="transparent-row">
                     <td><%= item.email %></td>
-                    <td><%= item.password %></td>
+              
+                    <td><%= item.firstname %></td>
+                    <td><%= item.lastname %></td>
+                    <td><%= item.phonenumber %></td>
+                    
                     <td>
-                        <a href="/admin/edit/<%= item._id %>">Edit</a>
+                        <a href="/admin/edit/<%= item._id %>"><i class="fas fa-edit text-warning"></i></a>
                     </td>
                     <td>
-                        <a href="/admin/delete/<%= item._id %>">Delete</a>
+                        <a href="/admin/delete/<%= item._id %>"><i class="fa-solid fa-trash text-danger"></i></a>
                     </td>
                     
                 </tr>

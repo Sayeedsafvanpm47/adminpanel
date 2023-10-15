@@ -1,0 +1,32 @@
+<%- include('head') -%>
+<body style="background-image: url('/public/save.jpg'); background-size: cover; background-repeat: repeat; background-color: inherit;">
+    <div class="text-center d-flex position-relative">
+        <h1 class="display-1" style="font-weight: bold; color: rgba(194, 96, 5, 0.518);">Save Your <span class="homespan">Chords!</span></h1>
+        <button class="btn position-absolute" style="right: 0; margin-top: 2%; background-color: rgba(197, 4, 4, 0.537); margin-right: 1%;">
+            <a class="text-white" style="text-decoration: none;" href="/logout">Logout</a>
+        </button>
+    </div>
+
+    <div class="container d-flex align-items-center justify-content-center" style="height: 100vh;">
+        <div class="posts" style="max-height: 600px; max-width: 700px; overflow-y: auto;">
+            <% if (posts && posts.length > 0) { %>
+                <ul class="list-group">
+                    <% posts.forEach((post, index) => { %>
+                        <li class="list-group-item text-start" style="margin: 5px 0; padding: 10px;">
+                            <h4>Chords <%= index + 1 %></h4>
+                            <p><%= post %></p>
+                            <form method="POST" action="/deleteposts">
+                              <input type="hidden" name="postId" value="<%= post.id %>">
+                              <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>You haven't posted anything yet.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <%- include('foot') -%>
+</body>
